@@ -87,5 +87,5 @@ printIPAddresses()
 print("Holocubic设备可以通过 http://[mac电脑IP地址]/sse 访问资源监控")
 print("服务器启动中...")
 
-let server = HTTPServer(port: 80)
-server.start() 
+let serverManager = ServerManager()
+serverManager.startServer()

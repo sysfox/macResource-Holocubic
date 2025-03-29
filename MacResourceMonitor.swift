@@ -395,6 +395,36 @@ class HTTPServer {
     }
 }
 
+class ServerManager {
+    func startServer() {
+        let server = HTTPServer(port: 80)
+        server.start()
+    }
+}
+
+func getCPUUsage() -> Double {
+    var cpuInfo = host_cpu_load_info()
+    var count = mach_msg_type_number_t(MemoryLayout<host_cpu_load_info_data_t>.size / MemoryLayout<integer_t>.size)
+    let result = withUnsafeMutablePointer(to: &cpuInfo) { infoPointer in
+        infoPointer.withMemoryRebound(to: integer_t.self, capacity: Int(count)) {
+            host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, $0, &count)
+        }
+    }
+    // 处理 result 的逻辑...
+    return 0.0
+}
+
+func getMemoryUsage() -> (usagePercent: Double, usedMB: Double) {
+    let stats = vm_statistics64_t.allocate(capacity: 1)
+    var count = mach_msg_type_number_t(MemoryLayout<vm_statistics64_data_t>.size / MemoryLayout<integer_t>.size)
+    // 其他逻辑...
+    _ = Double(stats.pointee.free_count) * Double(vm_page_size)
+    let activeMemory = Double(stats.pointee.active_count) * Double(vm_page_size)
+    let inactiveMemory = Double(stats.pointee.inactive_count) * Double(vm_page_size)
+    // 返回结果...
+    return (0.0, 0.0)
+}
+
 // 启动服务器
 let server = HTTPServer(port: 80)
-server.start() 
+server.start()
