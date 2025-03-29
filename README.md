@@ -1,0 +1,2 @@
+# macResource-Holocubic
+一款用于将Holocubic电脑性能监控与mac结合的软件
